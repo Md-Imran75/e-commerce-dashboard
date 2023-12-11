@@ -47,7 +47,8 @@ const Product = () => {
                                                 </td>
                                                 <td scope='row' className='py-3 font-medium whitespace-nowrap px-4'>
                                                     <div className="flex justify-start start items-center gap-4">
-                                                        <Link className="text-white-100 p-[6px] bg-secondary-500 rounded-sm hover:shadow-md hover:shadow-black-500 "> <FaEdit /> </Link>
+        
+                                                        <Link to={'/seller/dashboard/edit-product/:1'} className="text-white-100 p-[6px] bg-secondary-500 rounded-sm hover:shadow-md hover:shadow-black-500 "> <FaEdit /> </Link>
 
 
                                                         <Link className="text-white-100 p-[6px] bg-secondary-500 rounded-sm hover:shadow-md hover:shadow-black-500 "> <FaEye /> </Link>

@@ -1,5 +1,10 @@
 import {Link} from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import {useDispatch , useSelector} from 'react-redux'
+import {PropagateLoader} from 'react-spinners'
+import { overrideStyleForButtonLoader } from '../../utils/utils'
+import { messageClear, seller_register } from '../../store/reducers/authReducers'
+import  {toast} from 'react-hot-toast'
 
 const InitialState = {
   name:'',
@@ -8,9 +13,15 @@ const InitialState = {
   password:''
 }
 
-const Register = () =>  {
 
+
+const Register = () =>  {
  
+  const dispatch = useDispatch()
+
+ const {loader , errorMessage , successMessage} = useSelector(state => state.auth)
+
+
   const [user , setUser] = useState(InitialState)
 
   const handler = (e) => {
@@ -22,21 +33,31 @@ const Register = () =>  {
 
   const submit = (e) => {
    e.preventDefault()
+   dispatch(seller_register(user))
    setUser(InitialState)
-   console.log(user)
   }
 
+  useEffect(() => {
+    if(successMessage){
+      toast.success(successMessage)
+      dispatch(messageClear())
+    }
+    if(errorMessage){
+      toast.error(errorMessage)
+      dispatch(messageClear())
+    }
+  },[successMessage , errorMessage])
   
 
   return (
 
-    <section className="text-black-500 mt-20 ">
+    <section className="text-black-500 my-20 ">
     
 
        <div className='flex flex-col shadow-sm  md:w-1/3 px-10 md:mx-auto  py-10 bg-primary-100'>
        
            <div className='flex justify-between'>
-           <h2 className="text-gray-900 text-lg font-medium title-font mb-5">SingUp</h2>
+           <h2 className="text-gray-900 text-lg font-medium title-font mb-5">SIGN UP</h2>
            </div>
 
          <form onSubmit={submit}>
@@ -63,10 +84,15 @@ const Register = () =>  {
           <div className="flex flex-center gap-3 mb-2">
             
             <input type="checkbox" id="checkbox" name="checkbox"   />
-            <label htmlFor="checkbox">accpept out privacy policy</label>
+            <label htmlFor="checkbox">accpept our privacy policy</label>
           </div>
 
-          <button  className="text-white bg-secondary-500 text-primary-100 bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Sign Up</button>
+          <button disabled={loader ? true : false} className="text-white bg-secondary-500 text-primary-100 w-full  bg-indigo-500 border-0 py-2 uppercase px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+            {
+              loader ? <PropagateLoader color='#ffffff' cssOverride={overrideStyleForButtonLoader}/>  : 'Sing Up'
+            }
+          </button>
+
          </form>
           
           <p className="text-xs  mt-2">Already have an account? <Link to={'/login'} >Login</Link> </p>

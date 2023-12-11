@@ -14,6 +14,23 @@ export const admin_Login = createAsyncThunk(
          }
     } 
 )
+
+
+export const seller_register = createAsyncThunk(
+    'auth/seller_register',
+    async (info , {rejectWithValue , fulfillWithValue}) => {
+           
+        try {
+            const { data } = await api.post('/seller-register', info, { withCredentials: true })
+            localStorage.setItem('accessToken' , data.token)
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+         }
+    } 
+)
+
+
 export const authReducer = createSlice({
     name: 'auth',
     initialState: {
@@ -37,6 +54,19 @@ export const authReducer = createSlice({
             state.errorMessage = action.payload ? action.payload.error : 'An error occurred';
            },
            [admin_Login.fulfilled] : (state, action) => {
+            state.loader = false
+            state.successMessage = action.payload ? action.payload.message : 'An error occurred';
+           },
+
+
+           [seller_register.pending] : (state , _) => {
+            state.loader = true
+           },
+           [seller_register.rejected] : (state, action) => {
+            state.loader = false
+            state.errorMessage = action.payload ? action.payload.error : 'An error occurred';
+           },
+           [seller_register.fulfilled] : (state, action) => {
             state.loader = false
             state.successMessage = action.payload ? action.payload.message : 'An error occurred';
            }
