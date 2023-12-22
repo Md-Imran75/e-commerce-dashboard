@@ -1,6 +1,4 @@
 
-
-
 export const overrideStyleForButtonLoader = {
     display: 'flex',
     margin: '0 auto',
@@ -9,5 +7,3 @@ export const overrideStyleForButtonLoader = {
     alignItems: 'center',
     padding: '12px 0'
 };
-
-

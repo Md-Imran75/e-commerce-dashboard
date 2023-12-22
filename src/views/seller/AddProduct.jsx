@@ -1,12 +1,19 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { BsImages } from "react-icons/bs"
 import { Link } from "react-router-dom"
 import { IoCloseSharp } from 'react-icons/io5'
-
-
-
+import { useDispatch, useSelector } from 'react-redux'
+import { add_product, messageClear } from '../../store/reducers/productReducer'
+import { get_model } from '../../store/reducers/modelReducer'
+import { get_brand } from '../../store/reducers/brandReducer'
+import toast from 'react-hot-toast'
+import Button from '../components/Button'
+import { overrideStyleForButtonLoader } from '../../utils/utils'
+import { PropagateLoader } from 'react-spinners'
 
 const useImageInput = () => {
+
+
   const [images, setImages] = useState([]);
   const [imageShow, setImageShow] = useState([]);
 
@@ -38,66 +45,59 @@ const useImageInput = () => {
   };
 
   const removeImage = (i) => {
-    const filterImage = images.filter((img, index) => index !== i);
-    const filterImageUrl = imageShow.filter((img, index) => index !== i);
+    const filterImage = images.filter((_img, index) => index !== i);
+    const filterImageUrl = imageShow.filter((_img, index) => index !== i);
     setImages(filterImage);
     setImageShow(filterImageUrl);
   };
 
-  return { images, imageShow, handleImageChange, changeImage, removeImage };
+  return { images, imageShow, handleImageChange, changeImage, removeImage, setImageShow, setImages };
 };
 
 
 const AddProduct = () => {
 
+  const dispatch = useDispatch()
+  const { models } = useSelector(state => state.model)
+  const { brands } = useSelector(state => state.brand)
+  const { successMessage, errorMessage, loader } = useSelector(state => state.product)
   const imageInput1 = useImageInput();
   const imageInput2 = useImageInput();
 
-  const models = [
-    {
-      id: 1,
-      name: 'suzuki'
-    },
-    {
-      id: 2,
-      name: 'yamaha'
-    }, {
-      id: 3,
-      name: 'toyota'
-    }, {
-      id: 4,
-      name: 'tesla'
-    }, {
-      id: 5,
-      name: 'toyota'
-    }, {
-      id: 6,
-      name: 'suzuki'
-    },
-  ]
 
-  const brands = [
-    {
-      id: 1,
-      name: 'suzuki'
-    },
-    {
-      id: 2,
-      name: 'yamaha'
-    }, {
-      id: 3,
-      name: 'toyota'
-    }, {
-      id: 4,
-      name: 'tesla'
-    }, {
-      id: 5,
-      name: 'toyota'
-    }, {
-      id: 6,
-      name: 'suzuki'
-    },
-  ]
+  useEffect(() => {
+    dispatch(get_model({
+      searchValue: '',
+      perPage: '',
+      page: ""
+    }))
+  }, [])
+
+  useEffect(() => {
+    dispatch(get_brand({
+      searchValue: '',
+      perPage: '',
+      page: ""
+    }))
+  }, [])
+
+  const [state, setState] = useState({
+    name: '',
+    regYear: '',
+    cc: '',
+    ml: '',
+    kilometerAs: '',
+    taxValid: '',
+    fi: '',
+    price:'',
+    abs: '',
+    stock: '1',
+    description: '',
+
+  });
+
+
+ 
 
   // state for models
   const [modelShow, setModelShow] = useState(false)
@@ -110,21 +110,6 @@ const AddProduct = () => {
   const [allBrand, setAllBrand] = useState(models)
   const [brand, setBrand] = useState('')
 
-  //demo data 
-  const [state, setState] = useState({
-    name: '',
-    model: '',
-    brand: '',
-    regYear: '',
-    cc: '',
-    ml: '',
-    kilometerAs: '',
-    taxValid: '',
-    fi: '',
-    abs: '',
-    stock:'1',
-    description:''
-  });
 
 
 
@@ -158,102 +143,85 @@ const AddProduct = () => {
       let srchValue = allBrand.filter(c => c.name.toLowerCase().indexOf(value.toLowerCase()) > -1)
       setAllBrand(srchValue)
     } else {
-      setAllBrand(models)
+      setAllBrand(brands)
     }
   }
 
 
+  useEffect(() => {
+    setAllModel(models)
+  }, [models])
+
+  useEffect(() => {
+    setAllBrand(brands)
+  }, [brands])
+
+  const add = (e) => {
+    e.preventDefault()
+    const formData = new FormData()
+    formData.append('name', state.name)
+    formData.append('description', state.description)
+    formData.append('price', state.price)
+    formData.append('stock', state.stock)
+    formData.append('model', model)
+    formData.append('brand', brand)
+    formData.append('regYear', state.regYear)
+    formData.append('cc', state.cc)
+    formData.append('ml', state.ml)
+    formData.append('kilometerAs', state.kilometerAs)
+    formData.append('taxValid', state.taxValid)
+    formData.append('fi', state.fi)
+    formData.append('abs', state.abs)
+
+    for (let i = 0; i < imageInput1.images.length; i++) {
+      formData.append('productImages', imageInput1.images[i])
+    }
+    for (let i = 0; i < imageInput2.images.length; i++) {
+      formData.append('documentImages', imageInput2.images[i])
+    }
+    dispatch(add_product(formData))
+  }
 
 
 
-  // const [images, setImages] = useState([])
-  // const [imageShow, setImageShow] = useState([])
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage)
+      dispatch(messageClear())
+    }
+    if (successMessage) {
+      toast.success(successMessage)
+      dispatch(messageClear())
+      setState({
+        name: '',
+        price: '',
+        model: '',
+        brand: '',
+        regYear: '',
+        cc: '',
+        ml: '',
+        kilometerAs: '',
+        taxValid: '',
+        fi: '',
+        abs: '',
+        stock: '1',
+        description: ''
+      })
+      imageInput1.setImageShow([])
+      imageInput2.setImageShow([])
+      imageInput1.setImages([])
+      imageInput2.setImages([])
 
-  // const [docImages, setDocImages] = useState([])
-  // const [docImageShow, setDocImageShow] = useState([])
+      setModel('')
+      setBrand('')
 
-  // const imageHandle = (e) => {
-  //   const files = e.target.files
-  //   const length = files.length
-
-  //   if (length > 0) {
-  //     setImages([...images, ...files])
-  //     let imageUrl = []
-
-  //     for (let i = 0; i < length; i++) {
-
-  //       imageUrl.push({ url: URL.createObjectURL(files[i]) })
-  //     }
-
-  //     setImageShow([...imageShow, ...imageUrl])
-
-  //   }
-  // }
-
-  // const docImageHandle = (e) => {
-  //   const files = e.target.files
-  //   const length = files.length
-
-  //   if (length > 0) {
-  //     setDocImages([...docImages, ...files])
-  //     let imageUrl = []
-
-  //     for (let i = 0; i < length; i++) {
-
-  //       imageUrl.push({ url: URL.createObjectURL(files[i]) })
-  //     }
-
-  //     setDocImageShow([...docImageShow, ...imageUrl])
-
-  //   }
-  // }
+    }
+  }, [successMessage, errorMessage])
 
 
 
-  // const changeImage = (img, index) => {
-  //   if (img) {
-  //    let tempImages = images
-  //  let tempUrl = imageShow
-    
-  //     tempImages[index] = img
-  //     tempUrl[index] = { url: URL.createObjectURL(img) }
-  //     setImageShow([...tempUrl])
-  //     setImages([...tempImages])
-
-  //   }
-  // }
 
 
-  // const changeDocImage = (img, index) => {
-  //   if (img) {
-  //    let tempImages = docImages
-  //  let tempUrl = docImageShow
-    
-  //     tempImages[index] = img
-  //     tempUrl[index] = { url: URL.createObjectURL(img) }
-  //     setDocImageShow([...tempUrl])
-  //     setDocImages([...tempImages])
-
-  //   }
-  // }
-
-  // const removeImage = (i) => {
-  //   const filterImage = images.filter((img, index) => index !== i)
-  //   const filterImageUrl = imageShow.filter((img, index) => index !== i)
-  //   setImages(filterImage)
-  //   setImageShow(filterImageUrl)
-  // }
-
-
-  // const removeDocImage = (i) => {
-  //   const filterImage = docImages.filter((img, index) => index !== i)
-  //   const filterImageUrl = docImageShow.filter((img, index) => index !== i)
-  //   setDocImages(filterImage)
-  //   setDocImageShow(filterImageUrl)
-  // }
-
-   console.log('img 1',imageInput1.imageShow)
-   console.log('img 2',imageInput2.imageShow)
 
   return (
     <div className="px-2 lg:ml-[260px] md:px-7 py-5">
@@ -263,7 +231,7 @@ const AddProduct = () => {
           <Link to={'/seller/dashboard/products'} className="bg-primary-100  hover:shadow-sm text-black-500 rounded-md px-7 my-2 py-2">Bikes</Link>
         </div>
         <div>
-          <form>
+          <form onSubmit={add}>
             <div className="flex flex-col mb-3 md:flex-row gap-4 w-full text-black-500">
 
               <div className="flex flex-col w-full gap-1">
@@ -309,8 +277,8 @@ const AddProduct = () => {
               </div>
 
               <div className="flex flex-col w-full gap-1 relative">
-                <label htmlFor="model">Brand</label>
-                <input readOnly onClick={() => setBrandShow(!brandShow)} className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" id="model" value={brand} placeholder="--select brand--" onChange={changeHandeler} type="text" />
+                <label htmlFor="brand">Brand</label>
+                <input readOnly onClick={() => setBrandShow(!brandShow)} className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" id="brand" value={brand} placeholder="--select brand--" onChange={changeHandeler} type="text" />
 
                 <div className={`absolute top-[101%] bg-primary-200 w-full transition-all z-50 ${brandShow ? 'scale-100' : 'scale-0'}`}>
                   <div className="w-full px-4 py-2 fixed">
@@ -320,11 +288,11 @@ const AddProduct = () => {
                   <div className="flex  justify-start items-start flex-col h-[200px] overflow-x-scroll ">
                     {
                       allBrand.map((c, i) => (
-                        <span key={i} className={`px-4 py-2 hover:bg-secondary-400 hover:text-white-100 w-full cursor-pointer ${model === c.name && 'bg-primary-500'}`} onClick={() => {
+                        <span key={i} className={`px-4 py-2 hover:bg-secondary-400 hover:text-white-100 w-full cursor-pointer ${brand === c.name && 'bg-primary-500'}`} onClick={() => {
                           setBrandShow(false)
                           setBrand(c.name)
                           setSearchValue('')
-                          setAllBrand(models)
+                          setAllBrand(brands)
                         }}>{c.name}</span>
                       ))
                     }
@@ -359,12 +327,16 @@ const AddProduct = () => {
 
               <div className="flex flex-col w-full gap-1">
                 <label htmlFor="taxValid">Tax Valid</label>
-                <input className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="taxValid" value={state.taxValid} placeholder="e.g. 150" onChange={changeHandeler} type="number" min={0} />
+                <input className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="taxValid" value={state.taxValid} placeholder="e.g. 150" onChange={changeHandeler} type="text" min={0} />
               </div>
 
               <div className="flex flex-col w-full gap-1">
                 <label htmlFor="fi">FI</label>
                 <input className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="fi" value={state.fi} placeholder="e.g. 2021" onChange={changeHandeler} type="text" />
+              </div>
+              <div className="flex flex-col w-full gap-1">
+                <label htmlFor="ml">ML</label>
+                <input className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="ml" value={state.ml} placeholder="e.g. 2021" onChange={changeHandeler} type="number" />
               </div>
             </div>
 
@@ -373,19 +345,27 @@ const AddProduct = () => {
 
               <div className="flex flex-col w-full gap-1">
                 <label htmlFor="abs">ABS</label>
-                <input className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="abs" value={state.abs} placeholder="e.g. 150" onChange={changeHandeler} type="text"  />
+                <input className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="abs" value={state.abs} placeholder="e.g. 150" onChange={changeHandeler} type="text" />
               </div>
 
+
+              <div className="flex flex-col w-full gap-1">
+                <label htmlFor="price">Price</label>
+                <input className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="price" value={state.price} placeholder="e.g. 150" onChange={changeHandeler} type="number" required />
+              </div>
+
+
+            </div>
+
+            <div>
               <div className="flex flex-col w-full gap-1">
                 <label htmlFor="description">Description</label>
-                <textarea className="px-4 h-[100px] py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="description" value={state.description}  onChange={changeHandeler} type="text"  />
+                <textarea className="px-4 h-[100px] py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="description" value={state.description} onChange={changeHandeler} type="text" />
               </div>
             </div>
 
 
-
-
-            <div className="mt-20 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-2 sm:gap-4 md:gap-4 gap-3 xs:gap-4 w-full text-black-500 mb-4">
+            <div className="mt-20 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 sm:gap-4 md:gap-4 gap-3 xs:gap-4 w-full text-black-500 mb-4">
               {imageInput1.imageShow.map((img, i) => (
                 <div key={i} className="h-[180px]  relative">
                   <label htmlFor={i}>
@@ -399,10 +379,10 @@ const AddProduct = () => {
                 <span><BsImages /></span>
                 <span>select bike images</span>
               </label>
-              <input multiple  onChange={(e) => imageInput1.handleImageChange(e.target.files)} className="hidden" type="file" id="image1" />
+              <input multiple onChange={(e) => imageInput1.handleImageChange(e.target.files)} className="hidden" type="file" id="image1" />
             </div>
 
-            <div className=" grid grid-cols-1 md:grid-cols-3 lg:grid-cols-2 sm:gap-4 md:gap-4 gap-3 xs:gap-4 w-full text-black-500 mb-4">
+            <div className=" grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 sm:gap-4 md:gap-4 gap-3 xs:gap-4 w-full text-black-500 mb-4">
               {imageInput2.imageShow.map((img, i) => (
                 <div key={i} className="h-[180px]  relative">
                   <label htmlFor={i}>
@@ -412,16 +392,21 @@ const AddProduct = () => {
                   <span onClick={() => imageInput2.removeImage(i)} className="p-2 z-10 cursor-pointer bg-secondary-500 hover:shadow-md hover:shadow-primary-500 absolute text-white-100 top-1 right-1 rounded-full"><IoCloseSharp /></span>
                 </div>
               ))}
-              <label className="flex justify-center items-center flex-col h-[180px] cursor-pointer border border-dashed hover:border-dashed hover:border-secondary-500 w-full border-primary-500" htmlFor="image2">
+              <label className="flex text-center justify-center items-center flex-col h-[180px] cursor-pointer border border-dashed hover:border-dashed hover:border-secondary-500 w-full border-primary-500" htmlFor="image2">
                 <span><BsImages /></span>
                 <span>select Registration certificate , Tax Token , NID images</span>
               </label>
-              <input multiple  onChange={(e) => imageInput2.handleImageChange(e.target.files)} className="hidden" type="file" id="image2" />
+              <input multiple onChange={(e) => imageInput2.handleImageChange(e.target.files)} className="hidden" type="file" id="image2" />
             </div>
 
 
             <div className="flex">
-              <button className="bg-secondary-500  hover:shadow-sm rounded-md px-7 py-2 my-2 text-white-100 hover:shadow-black-500 ">Add Product</button>
+              <Button disabled={loader ? true : false}  >
+                {
+                  loader ? <PropagateLoader color='#fff' cssOverride={overrideStyleForButtonLoader} /> : 'Add Bike'
+                }
+
+              </Button>
             </div>
           </form>
 

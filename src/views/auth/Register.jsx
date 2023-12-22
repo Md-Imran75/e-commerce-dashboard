@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom'
+import {Link , useNavigate} from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import {useDispatch , useSelector} from 'react-redux'
 import {PropagateLoader} from 'react-spinners'
@@ -18,6 +18,7 @@ const InitialState = {
 const Register = () =>  {
  
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
  const {loader , errorMessage , successMessage} = useSelector(state => state.auth)
 
@@ -41,12 +42,13 @@ const Register = () =>  {
     if(successMessage){
       toast.success(successMessage)
       dispatch(messageClear())
+      navigate('/')
     }
     if(errorMessage){
       toast.error(errorMessage)
       dispatch(messageClear())
     }
-  },[successMessage , errorMessage])
+  },[successMessage  , errorMessage])
   
 
   return (

@@ -1,5 +1,11 @@
-import { useState } from 'react'
-import {Link} from 'react-router-dom'
+import { useState , useEffect } from 'react'
+import {Link , useNavigate} from 'react-router-dom'
+import  {toast} from 'react-hot-toast'
+import {useDispatch , useSelector} from 'react-redux'
+import {PropagateLoader} from 'react-spinners'
+import { overrideStyleForButtonLoader } from '../../utils/utils'
+import { messageClear, seller_login} from '../../store/reducers/authReducers'
+
 
 const InitialState = {
   email:'',
@@ -7,7 +13,13 @@ const InitialState = {
 }
 
 const Login = () => {
-   const [user , setUser] = useState(InitialState)
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [user , setUser] = useState(InitialState)
+
+  const {loader , errorMessage , successMessage} = useSelector(state => state.auth)
+
 
    const handler = (e) => {
     setUser({
@@ -16,11 +28,29 @@ const Login = () => {
     })
    }
 
+   
+
    const submit = (e) => {
     e.preventDefault()
     setUser(InitialState)
-    console.log(user)
+    dispatch(seller_login(user))
+   
    }
+
+   
+   
+
+   useEffect(() => {
+    if(successMessage){
+      toast.success(successMessage)
+      dispatch(messageClear())
+      navigate('/')
+    }
+    if(errorMessage){
+      toast.error(errorMessage)
+      dispatch(messageClear())
+    }
+  },[successMessage , errorMessage])
 
     return (
       <section className="text-black-500 mx-5 md:mx-10   ">
@@ -38,7 +68,11 @@ const Login = () => {
             <label htmlFor="password" className="leading-7 text-sm text-gray-600">Password</label>
             <input type="password" id="password" name="password" required onChange={handler} value={user.password} className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
           </div>
-          <button className="text-white bg-secondary-500 text-primary-100 bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Login</button>
+          <button disabled={loader ? true : false} className="text-white bg-secondary-500 text-primary-100 w-full  bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+            {
+              loader ? <PropagateLoader color='#ffffff' cssOverride={overrideStyleForButtonLoader}/>  : 'Login'
+            }
+          </button>
           </form>
           <p className="text-xs text-gray-500 mt-3">Don't have any account?
             <Link to={'/register'}>Sing up</Link></p>

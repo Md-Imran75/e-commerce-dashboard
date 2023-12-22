@@ -4,6 +4,8 @@ import {PropagateLoader} from 'react-spinners'
 import { admin_Login, messageClear } from '../../store/reducers/authReducers'
 import  {toast} from 'react-hot-toast'
 import {useNavigate } from 'react-router-dom'
+import { overrideStyleForButtonLoader } from '../../utils/utils'
+
 
 const InitialState = {
   email:'',
@@ -32,15 +34,6 @@ const AdminLogin = () => {
     
    }
 
-   // react spinner button style
-   const overrideStyleForButtonLoader = {
-    display: 'flex',
-    margin: '0 auto',
-    hieght: '24px',
-    justifyContent:'center',
-    alignItems:'center',
-    padding: '12px 0'
-   };
 
    useEffect(() => {
           if(errorMessage){

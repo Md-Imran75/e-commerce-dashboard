@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { lazy, Suspense } from 'react';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router  } from 'react-router-dom';
 import store from './store';
 import { Provider } from 'react-redux';
 import { Toaster } from 'react-hot-toast'
@@ -16,10 +16,11 @@ const App = lazy(() => import('./App'))
 //     <App />
 //   </React.StrictMode>
 // );
+// store.dispatch(setRole(localStorage.getItem('accessToken')));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <BrowserRouter>
+    <Router>
         <Provider store={store} >
             <Suspense>
                 <App />
@@ -33,7 +34,7 @@ root.render(
                     }} />
             </Suspense>
         </Provider>
-    </BrowserRouter>
+    </Router>
 
 );
 
