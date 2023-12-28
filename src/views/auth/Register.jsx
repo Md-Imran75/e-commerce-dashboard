@@ -10,6 +10,7 @@ const InitialState = {
   name:'',
   email:'',
   favoriteBike:'',
+  phone:'',
   password:''
 }
 
@@ -42,7 +43,7 @@ const Register = () =>  {
     if(successMessage){
       toast.success(successMessage)
       dispatch(messageClear())
-      navigate('/')
+      navigate('/login')
     }
     if(errorMessage){
       toast.error(errorMessage)
@@ -77,10 +78,15 @@ const Register = () =>  {
             <label htmlFor="favoriteBike">Favortie Bike</label>
             <input type="text" id="favoriteBike" name="favoriteBike" required onChange={handler} value={user.favoriteBike} placeholder='Yamaha' className="w-full bg-white rounded border  outline-none  py-1 px-3 leading-8 transition-colors duration-200 " />
           </div>
+
+          <div className="relative mb-2">
+            <label htmlFor="phone">Phone Number</label>
+            <input type="number" id="phone" name="phone" required onChange={handler} value={user.phone} placeholder='01*********' className="w-full bg-white rounded border  outline-none  py-1 px-3 leading-8 transition-colors duration-200 " min={0} minLength={11} />
+          </div>
          
           <div className="relative mb-2">
             <label htmlFor="password">Password</label>
-            <input type="password" id="password" name="password" onChange={handler} value={user.password} required placeholder='password' className="w-full bg-white rounded border border-gray-300 focus:ring-2  py-1 px-3 leading-8 t" />
+            <input type="password" id="password" name="password" onChange={handler} value={user.password} required placeholder='password' className="w-full bg-white rounded border border-gray-300 focus:ring-2  py-1 px-3 leading-8 t" minLength={6}/>
           </div>
 
           <div className="flex flex-center gap-3 mb-2">

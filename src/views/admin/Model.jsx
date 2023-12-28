@@ -13,7 +13,7 @@ const InitialState = {
 const Model = () => {
 
     const dispatch = useDispatch()
-    const { loader, successMessage, models, errorMessage } = useSelector(state => state.model);
+    const { loader, successMessage, models, errorMessage , totalmodel } = useSelector(state => state.model);
     const [currentPage, setCurrentPage] = useState(1)
     const [searchValue, setSearchValue] = useState('')
     const [perPage, setPerPage] = useState(10)
@@ -79,7 +79,7 @@ const Model = () => {
 
     return (
         <div>
-            <BrandAndModel name={'Model'} names={'Models'} setCurrentPage={setCurrentPage} setPerPage={setPerPage} setSearchValue={setSearchValue} data={models} currentPage={currentPage} imageHandle={imageHandle} imageShow={imageShow} loader={loader} setShow={setShow} show={show} submit={addModel} state={state} setState={setState} perPage={perPage} />
+            <BrandAndModel total={totalmodel} name={'Model'} names={'Models'} setCurrentPage={setCurrentPage} setPerPage={setPerPage} setSearchValue={setSearchValue} data={models} currentPage={currentPage} imageHandle={imageHandle} imageShow={imageShow} loader={loader} setShow={setShow} show={show} submit={addModel} state={state} setState={setState} perPage={perPage} />
         </div>
     )
 }

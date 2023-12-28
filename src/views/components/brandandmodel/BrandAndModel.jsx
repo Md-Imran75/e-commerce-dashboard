@@ -10,7 +10,7 @@ import { Link } from "react-router-dom"
 
 
 
-const BrandAndModel = ({name , names , setPerPage, perPage ,setSearchValue, currentPage, setCurrentPage, show , setShow , submit , data , imageShow , imageHandle , loader , state , setState}) => {
+const BrandAndModel = ({name , names ,total, setPerPage, perPage ,setSearchValue, currentPage, setCurrentPage, show , setShow , submit , data , imageShow , imageHandle , loader , state , setState}) => {
   return (
     <div className='px-2 lg:ml-[260px] md:px-7 pt-5'>
             <div className="flex lg:hidden justify-between items-center mb-5 p-4 bg-primary-100 rounded-md">
@@ -67,7 +67,7 @@ const BrandAndModel = ({name , names , setPerPage, perPage ,setSearchValue, curr
                             <Pagination
                                 pageNumber={currentPage}
                                 setPageNumber={setCurrentPage}
-                                totalItem={50}
+                                totalItem={total}
                                 perPage={perPage}
                                 showItem={3}
                             />
@@ -101,7 +101,7 @@ const BrandAndModel = ({name , names , setPerPage, perPage ,setSearchValue, curr
                                             </>
                                         }
                                     </label>
-                                    <input onChange={imageHandle} className="hidden" type="file" name="image" id="image" />
+                                    <input onChange={imageHandle}  className="hidden" type="file" name="image" id="image" />
                                 </div>
                                 <div className='mt-4'>
                                     

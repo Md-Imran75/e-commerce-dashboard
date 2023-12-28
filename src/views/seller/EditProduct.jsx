@@ -22,8 +22,6 @@ export const useProductImageInput = (productId) => {
 
 
   const changeImage = (img, files) => {
-    console.log('new Image from pro', img)
-    console.log('old Image from  pro', files[0])
 
 
     if (files.length > 0) {
@@ -49,8 +47,6 @@ export const useDocumentImageInput = (productId) => {
 
 
   const changeImage = (img, files) => {
-    console.log('new Image from doc', img)
-    console.log('old Image from doc', files[0])
     if (files.length > 0) {
       dispatch(document_image_update({
         oldImage: img,
@@ -167,28 +163,28 @@ const EditProduct = () => {
 
   useEffect(() => {
     setState({
-      name: product.name,
-      model: product.model,
-      brand: product.brand,
-      regYear: product.regYear,
-      cc: product.cc,
-      ml: product.ml,
-      kilometerAs: product.kilometerAs,
-      taxValid: product.taxValid,
-      fi: product.fi,
-      abs: product.abs,
+      name: product.name || '',
+      model: product.model || '',
+      brand: product.brand || '',
+      regYear: product.regYear || '',
+      cc: product.cc || '',
+      ml: product.ml || '',
+      kilometerAs: product.kilometerAs || '',
+      taxValid: product.taxValid || '',
+      fi: product.fi || '',
+      abs: product.abs || '',
       stock: '1',
-      description: product.description,
-      price: product.price
-    })
+      description: product.description || '',
+      price: product.price || ''
+    });
 
-    setBrand(product.brand)
-    setModel(product.model)
-    imageInput1.setImageShow(product.productImages)
+    setBrand(product.brand || '');
+    setModel(product.model || '');
+    imageInput1.setImageShow(product.productImages || []);
+    imageInput2.setImageShow(product.documentImages || []);
+  }, [product]);
 
-    imageInput2.setImageShow(product.documentImages)
 
-  }, [product])
 
 
   useEffect(() => {
@@ -231,6 +227,8 @@ const EditProduct = () => {
       stock: '1',
       description: state.description,
       price: state.price,
+      model: model,
+      brand: brand,
       productId: productId
     }
     dispatch(update_product(obj))
