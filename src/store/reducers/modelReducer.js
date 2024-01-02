@@ -49,25 +49,26 @@ export const modelReducer = createSlice({
             state.successMessage = ""
         }
     },
-    extraReducers: {
-        [modelAdd.pending]: (state, _) => {
-            state.loader = true
-        },
-        [modelAdd.rejected]: (state, { payload }) => {
-            state.loader = false
-            state.errorMessage = payload.error
-        },
-        [modelAdd.fulfilled]: (state, { payload }) => {
-            state.loader = false
-            state.successMessage = payload.message
-            state.models = [...state.models, payload.model]
-        },
-        [get_model.fulfilled]: (state, { payload }) => {
-            state.totalmodel = payload.totalmodel
-            state.models = payload.models
-        },
-    }
-
+    extraReducers: (builder) => {
+        builder
+          .addCase(modelAdd.pending, (state, _) => {
+            state.loader = true;
+          })
+          .addCase(modelAdd.rejected, (state, { payload }) => {
+            state.loader = false;
+            state.errorMessage = payload.error;
+          })
+          .addCase(modelAdd.fulfilled, (state, { payload }) => {
+            state.loader = false;
+            state.successMessage = payload.message;
+            state.models = [...state.models, payload.model];
+          })
+          .addCase(get_model.fulfilled, (state, { payload }) => {
+            state.totalmodel = payload.totalmodel;
+            state.models = payload.models;
+          });
+      }
+      
 })
 export const { messageClear } = modelReducer.actions
 export default modelReducer.reducer

@@ -4,7 +4,7 @@ import { FaEdit, FaEye, FaTrash } from "react-icons/fa"
 import { Link } from "react-router-dom"
 import Pagination from "../Pagination"
 import { useDispatch, useSelector } from 'react-redux'
-import { get_products } from "../../store/reducers/productReducer"
+import { get_products, delete_product} from "../../store/reducers/productReducer"
 
 
 const Product = () => {
@@ -14,7 +14,18 @@ const Product = () => {
     const [searchValue, setSearchValue] = useState('')
     const [perPage, setPerPage] = useState(10)
 
-console.log(products)
+
+    const handleDeleteProduct = async (productId) => {
+        try {
+            await dispatch(delete_product(productId));
+            // Fetch the updated product list immediately after deletion
+            dispatch(get_products({ perPage, page: currentPage, searchValue }));
+        } catch (error) {
+            console.error('Error deleting product:', error);
+        }
+    };
+
+    
     // useEffect for pagination
     useEffect(() => {
         const obj = {
@@ -68,9 +79,8 @@ console.log(products)
                                                         <Link to={`/seller/dashboard/edit-product/${d._id}`} className="text-white-100 p-[6px] bg-secondary-500 rounded-sm hover:shadow-md hover:shadow-black-500 "> <FaEdit /> </Link>
 
 
-                                                        <Link className="text-white-100 p-[6px] bg-secondary-500 rounded-sm hover:shadow-md hover:shadow-black-500 "> <FaEye /> </Link>
 
-                                                        <button className="text-white-100 p-[6px] bg-secondary-500 rounded-sm hover:shadow-md hover:shadow-black-500 "> <FaTrash /> </button>
+                                                        <button onClick={() => handleDeleteProduct(d._id)} className="text-white-100 p-[6px] bg-secondary-500 rounded-sm hover:shadow-md hover:shadow-black-500 "> <FaTrash /> </button>
                                                     </div>
                                                 </td>
                                             </tr>

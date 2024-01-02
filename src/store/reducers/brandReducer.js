@@ -51,24 +51,26 @@ export const brandReducer = createSlice({
             state.successMessage = ""
         }
     },
-    extraReducers: {
-        [brandAdd.pending]: (state, _) => {
-            state.loader = true
-        },
-        [brandAdd.rejected]: (state, { payload }) => {
-            state.loader = false
-            state.errorMessage = payload.error
-        },
-        [brandAdd.fulfilled]: (state, { payload }) => {
-            state.loader = false
-            state.successMessage = payload.message
-            state.brands = [...state.brands, payload.brand]
-        },
-        [get_brand.fulfilled]: (state, { payload }) => {
-            state.totalbrand = payload.totalbrand
-            state.brands = payload.brands
-        },
-    }
+    extraReducers: (builder) => {
+        builder
+          .addCase(brandAdd.pending, (state, _) => {
+            state.loader = true;
+          })
+          .addCase(brandAdd.rejected, (state, { payload }) => {
+            state.loader = false;
+            state.errorMessage = payload.error;
+          })
+          .addCase(brandAdd.fulfilled, (state, { payload }) => {
+            state.loader = false;
+            state.successMessage = payload.message;
+            state.brands = [...state.brands, payload.brand];
+          })
+          .addCase(get_brand.fulfilled, (state, { payload }) => {
+            state.totalbrand = payload.totalbrand;
+            state.brands = payload.brands;
+          });
+      }
+      
 
 })
 export const { messageClear } = brandReducer.actions

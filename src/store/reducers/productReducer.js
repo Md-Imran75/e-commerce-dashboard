@@ -91,6 +91,19 @@ export const get_product = createAsyncThunk(
     }
 )
 
+export const delete_product = createAsyncThunk(
+    'product/delete_product',
+    async (productId, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.post('/delete-product', { productId }, { withCredentials: true });
+            return fulfillWithValue(data);
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+
 
 
 export const productReducer = createSlice({
@@ -109,46 +122,60 @@ export const productReducer = createSlice({
             state.successMessage = ""
         }
     },
-    extraReducers: {
-        [add_product.pending]: (state, _) => {
-            state.loader = true
-        },
-        [add_product.rejected]: (state, { payload }) => {
-            state.loader = false
-            state.errorMessage = payload.error
-        },
-        [add_product.fulfilled]: (state, { payload }) => {
-            state.loader = false
-            state.successMessage = payload.message
-        },
-        [get_products.fulfilled]: (state, { payload }) => {
-            state.totalProduct = payload.totalProduct
-            state.products = payload.products
-        },
-        [get_product.fulfilled]: (state, { payload }) => {
-            state.product = payload.product
-        },
-        [update_product.pending]: (state, _) => {
-            state.loader = true
-        },
-        [update_product.rejected]: (state, { payload }) => {
-            state.loader = false
-            state.errorMessage = payload.error
-        },
-        [update_product.fulfilled]: (state, { payload }) => {
-            state.loader = false
-            state.product = payload.product
-            state.successMessage = payload.message
-        },
-        [product_image_update.fulfilled]: (state, { payload }) => {
-            state.product = payload.product
-            state.successMessage = payload.message
-        },
-        [document_image_update.fulfilled]: (state, { payload }) => {
-            state.product = payload.product
-            state.successMessage = payload.message
-        },
-    }
+
+    extraReducers: (builder) => {
+  builder
+    .addCase(add_product.pending, (state, _) => {
+      state.loader = true;
+    })
+    .addCase(add_product.rejected, (state, { payload }) => {
+      state.loader = false;
+      state.errorMessage = payload.error;
+    })
+    .addCase(add_product.fulfilled, (state, { payload }) => {
+      state.loader = false;
+      state.successMessage = payload.message;
+    })
+    .addCase(get_products.fulfilled, (state, { payload }) => {
+      state.totalProduct = payload.totalProduct;
+      state.products = payload.products;
+    })
+    .addCase(get_product.fulfilled, (state, { payload }) => {
+      state.product = payload.product;
+    })
+    .addCase(update_product.pending, (state, _) => {
+      state.loader = true;
+    })
+    .addCase(update_product.rejected, (state, { payload }) => {
+      state.loader = false;
+      state.errorMessage = payload.error;
+    })
+    .addCase(update_product.fulfilled, (state, { payload }) => {
+      state.loader = false;
+      state.product = payload.product;
+      state.successMessage = payload.message;
+    })
+    .addCase(product_image_update.fulfilled, (state, { payload }) => {
+      state.product = payload.product;
+      state.successMessage = payload.message;
+    })
+    .addCase(document_image_update.fulfilled, (state, { payload }) => {
+      state.product = payload.product;
+      state.successMessage = payload.message;
+    })
+    .addCase(delete_product.pending, (state, _) => {
+        state.loader = true;
+    })
+    .addCase(delete_product.rejected, (state, { payload }) => {
+        state.loader = false;
+        state.errorMessage = payload.error;
+    })
+    .addCase(delete_product.fulfilled, (state, { payload }) => {
+        state.loader = false;
+        state.successMessage = payload.message;
+    });
+
+}
 
 })
 export const { messageClear } = productReducer.actions

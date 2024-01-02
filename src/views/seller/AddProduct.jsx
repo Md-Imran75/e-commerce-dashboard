@@ -91,7 +91,7 @@ const AddProduct = () => {
     fi: '',
     price:'',
     abs: '',
-    stock: '1',
+    stock: '',
     description: '',
 
   });
@@ -204,7 +204,7 @@ const AddProduct = () => {
         taxValid: '',
         fi: '',
         abs: '',
-        stock: '1',
+        stock: '',
         description: ''
       })
       imageInput1.setImageShow([])
@@ -348,6 +348,10 @@ const AddProduct = () => {
                 <input className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="abs" value={state.abs} placeholder="e.g. 150" onChange={changeHandeler} type="text" />
               </div>
 
+              <div className="flex flex-col w-full gap-1">
+                <label htmlFor="stock">Stock</label>
+                <input className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="stock" min={0} value={state.stock} placeholder="e.g. 150" onChange={changeHandeler} type="number" />
+              </div>
 
               <div className="flex flex-col w-full gap-1">
                 <label htmlFor="price">Price</label>

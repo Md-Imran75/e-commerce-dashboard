@@ -11,10 +11,8 @@ const SellerRequest = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const [searchValue, setSearchValue] = useState('')
     const [perPage, setPerPage] = useState(10)
-    const [show, setShow] = useState(false)
     const dispatch = useDispatch()
     const { sellers, totalSeller } = useSelector(state => state.seller)
-    console.log(sellers)
     useEffect(() => {
         dispatch(get_seller_request({
             perPage,
@@ -88,7 +86,7 @@ const SellerRequest = () => {
                             setPageNumber={setCurrentPage}
                             totalItem={totalSeller}
                             perPage={perPage}
-                            showItem={10}
+                            showItem={3}
                         />
                     </div>
                 }

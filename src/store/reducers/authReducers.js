@@ -47,6 +47,18 @@ export const seller_register = createAsyncThunk(
     }
 )
 
+export const seller_change_password = createAsyncThunk(
+    'auth/seller_change_password',
+    async (info, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.post('/seller-change-password', info, { withCredentials: true });
+            console.log(data)
+            return fulfillWithValue(data);
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
 
 
 export const profile_image_upload = createAsyncThunk(
@@ -222,7 +234,18 @@ export const authReducer = createSlice({
                 state.userInfo = payload.userInfo
                 state.successMessage = payload.message
             })
-           
+            .addCase(seller_change_password.pending, (state, _) => {
+                state.loader = true;
+            })
+            .addCase(seller_change_password.rejected, (state, action) => {
+                state.loader = false;
+                state.errorMessage = action.payload ? action.payload.error : 'An error occurred';
+            })
+            .addCase(seller_change_password.fulfilled, (state, action) => {
+                state.loader = false;
+                state.successMessage = action.payload ? action.payload.message : 'An error occurred';
+            })
+            
             
     
     },

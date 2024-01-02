@@ -1,4 +1,5 @@
 import { lazy } from 'react'
+import OrderDetails from '../../views/seller/orderDetails'
 
 
 
@@ -6,7 +7,6 @@ const SellerDashboard = lazy(() => import('../../views/seller/SellerDashboard'))
 const AddProduct = lazy(() => import('../../views/seller/AddProduct'))
 const Product = lazy(() => import('../../views/seller/Product'))
 const Orders = lazy(() => import('../../views/seller/Orders'))
-const Payment = lazy(() => import('../../views/seller/Payment'))
 const ChatSupport = lazy(() => import('../../views/seller/ChatSupport'))
 const Profile = lazy(() => import('../../views/seller/Profile'))
 const EditProduct = lazy(() => import('../../views/seller/EditProduct'))
@@ -62,12 +62,12 @@ export const sellerRoutes = [
         visibility: ['active', 'deactive']
     },
     {
-        path: '/seller/dashboard/payments',
-        element: <Payment />,
+        path: '/seller/dashboard/order/details/:orderId',
+        element: <OrderDetails />,
         role: 'seller',
-        status: 'active'
-
+        visibility: ['active', 'deactive']
     },
+    
     {
         path: '/seller/dashboard/chat-support',
         element: <ChatSupport />,

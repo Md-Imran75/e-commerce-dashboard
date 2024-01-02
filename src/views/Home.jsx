@@ -3,8 +3,8 @@ import {useSelector } from "react-redux"
 
 const Home = () => {
 
-  const {role} = useSelector(state => state.auth.userInfo)
-  console.log(role)
+  const {userInfo} = useSelector(state => state.auth)
+  const role = userInfo.role
   
   if(role === 'seller') return <Navigate to='/seller/dashboard' replace />
   else if (role === 'admin') return <Navigate to='/admin/dashboard' replace/>

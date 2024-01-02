@@ -8,8 +8,11 @@ import toast from 'react-hot-toast'
 import { overrideStyleForButtonLoader } from '../../utils/utils'
 import { profile_image_upload, messageClear, profile_info_add } from '../../store/reducers/authReducers'
 import Button from '../components/Button'
+import { seller_change_password } from '../../store/reducers/authReducers'
 
 const Profile = () => {
+    const dispatch = useDispatch()
+    const { userInfo, loader, successMessage, errorMessage } = useSelector(state => state.auth)
 
     const [state, setState] = useState({
         division: '',
@@ -18,26 +21,56 @@ const Profile = () => {
         thana: ''
     })
 
+    const [passwordForm, setPasswordForm] = useState({
+        email: '',
+        oldPassword: '',
+        newPassword: '',
+    });
+
+    const changePassword = async (e) => {
+        e.preventDefault();
+        try {
+            dispatch(seller_change_password(passwordForm));
+           
+        } catch (error) {
+            toast.error('An error occurred while changing the password.');
+        }
+
+    };
+    const handlePasswordChange = (e) => {
+        setPasswordForm({
+            ...passwordForm,
+            [e.target.name]: e.target.value,
+        });
+    };
 
 
-    const dispatch = useDispatch()
-    const { userInfo, loader, successMessage } = useSelector(state => state.auth)
-    
+
+
 
     const add_image = (e) => {
-        console.log(e.target.files[0])
         if (e.target.files.length > 0) {
             const formData = new FormData()
             formData.append('image', e.target.files[0])
             dispatch(profile_image_upload(formData))
         }
     }
+
     useEffect(() => {
         if (successMessage) {
             toast.success(successMessage)
+            setPasswordForm({
+                email: '',
+                oldPassword: '',
+                newPassword: '',
+            })
             messageClear()
         }
-    }, [successMessage])
+        if (errorMessage) {
+            toast.error(errorMessage)
+            messageClear()
+        }
+    }, [successMessage, errorMessage])
 
 
     const add = (e) => {
@@ -183,20 +216,20 @@ const Profile = () => {
                     <div className='w-full pl-0 md:pl-7 mt-6 md:mt-0 bg-primary-200 rounded-md text-black-500'>
                         <div className='py-5 px-2'>
                             <h2 className='text-lg mb-2 font-bold text-black-500'>Change Password</h2>
-                            <form >
+                            <form onSubmit={changePassword}>
                                 <div className="flex flex-col w-full gap-1">
                                     <label htmlFor="email">email</label>
-                                    <input className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="email" placeholder="enter your email" type="text" />
+                                    <input onChange={handlePasswordChange} value={passwordForm.email} className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="email" required placeholder="enter your email" type="text" />
                                 </div>
 
                                 <div className="flex flex-col w-full gap-1">
-                                    <label htmlFor="o_password">Old Password</label>
-                                    <input className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="o_password" placeholder="enter your old password" type="password" />
+                                    <label htmlFor="oldPassword">Old Password</label>
+                                    <input onChange={handlePasswordChange} value={passwordForm.oldPassword} className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="oldPassword" placeholder="enter your old password" required min={6} type="password" />
                                 </div>
 
                                 <div className="flex flex-col w-full gap-1">
-                                    <label htmlFor="n_password">New Password</label>
-                                    <input className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="n_password" placeholder="enter your new password" type="password" />
+                                    <label htmlFor="newPassword">New Password</label>
+                                    <input onChange={handlePasswordChange} value={passwordForm.newPassword} className="px-4 py-2 focus:border-primary-500 focus:border outline-none text-black-500 rounded-md bg-primary-100" name="newPassword" placeholder="enter your new password" min={6} type="password" />
                                 </div>
 
                                 <button className="bg-secondary-500  hover:shadow-sm rounded-md px-7 py-2 my-2 text-white-100 mt-5 hover:shadow-black-500 ">Submit</button>

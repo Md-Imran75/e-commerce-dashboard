@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react"
-import { Link , useLocation } from "react-router-dom"
+import { Link , useLocation , useNavigate } from "react-router-dom"
 import {getNavs} from '../navigation/index'
-import { BiLogOut } from "react-icons/bi"
 import {useSelector } from "react-redux"
-
+import { logout } from '../store/reducers/authReducers'
+import { BiLogInCircle } from 'react-icons/bi'
+import { useDispatch } from 'react-redux'
 
 const Sidebar = ({setShowSidebar , showSidebar}) => {
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const {role} = useSelector(state => state.auth)
    const {pathname} = useLocation()
     const [allNav , setAllNav] = useState([])
@@ -27,7 +31,7 @@ const Sidebar = ({setShowSidebar , showSidebar}) => {
          <div className="px-[16px]">
            <ul className="mt-5">
             {
-              allNav.map((nav , index) => <li key={index} >
+              allNav?.map((nav , index) => <li key={index} >
                 <Link to={nav.path} className={`${pathname === nav.path ? 'bg-primary-100 shadow-sm text-black-500' :'text-black-500'} px-[12px] py-[9px] rounded-sm flex justify-start items-center gap-[12px] hover:pl-4 transition-all w-full mb-1 `}>
                 <span>{nav.icon}</span>
                 <span>{nav.title}</span>
@@ -36,12 +40,10 @@ const Sidebar = ({setShowSidebar , showSidebar}) => {
               </li> )
             }
             <li>
-              <button className="text-black-500'} px-[12px] py-[9px] rounded-sm flex justify-start items-center gap-[12px] hover:pl-4 transition-all w-full mb-1 ">
+              <button  onClick={() => dispatch(logout({ navigate, role }))} className="text-black-500'} px-[12px] py-[9px] rounded-sm flex justify-start items-center gap-[12px] hover:pl-4 transition-all w-full mb-1 ">
+              <span><BiLogInCircle /></span>
                 <span>
-                  <BiLogOut/>
-                </span>
-                <span>
-                  Logout
+                   Logout
                 </span>
               </button>
             </li>

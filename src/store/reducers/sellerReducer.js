@@ -63,30 +63,8 @@ export const get_deactive_sellers = createAsyncThunk(
     }
 )
 
-export const create_stripe_connect_account = createAsyncThunk(
-    'seller/create_stripe_connect_account',
-    async () => {
-        try {
-            const { data: { url } } = await api.get(`/payment/create-stripe-connect-account`, { withCredentials: true })
-            window.location.href = url
-           // return fulfillWithValue(data)
-        } catch (error) {
-            //return rejectWithValue(error.response.data)
-        }
-    }
-)
 
-export const active_stripe_connect_account = createAsyncThunk(
-    'seller/active_stripe_connect_account',
-    async (activeCode, { rejectWithValue, fulfillWithValue }) => {
-        try {
-            const { data } = await api.put(`/payment/active-stripe-connect-account/${activeCode}`, {}, { withCredentials: true })
-            return fulfillWithValue(data)
-        } catch (error) {
-            return rejectWithValue(error.response.data)
-        }
-    }
-)
+
 
 
 
@@ -108,34 +86,27 @@ export const sellerReducer = createSlice({
             state.successMessage = ""
         }
     },
-    extraReducers: {
-        [get_seller_request.fulfilled]: (state, { payload }) => {
-            state.sellers = payload.sellers
-            state.totalSeller = payload.totalSeller
-        },
-        [get_seller.fulfilled]: (state, { payload }) => {
-            state.seller = payload.seller
-        },
-        [seller_status_update.fulfilled]: (state, { payload }) => {
-            state.seller = payload.seller
-            state.successMessage = payload.message
-        },
-        [get_active_sellers.fulfilled]: (state, { payload }) => {
-            state.sellers = payload.sellers
-            state.totalSeller = payload.totalSeller
-        },
-        [active_stripe_connect_account.pending]: (state, { payload }) => {
-            state.loader = true
-        },
-        [active_stripe_connect_account.rejected]: (state, { payload }) => {
-            state.loader = false
-            state.errorMessage = payload.message
-        },
-        [active_stripe_connect_account.fulfilled]: (state, { payload }) => {
-            state.loader = false
-            state.successMessage = payload.message
-        },
-    }
+
+    extraReducers: (builder) => {
+  builder
+    .addCase(get_seller_request.fulfilled, (state, { payload }) => {
+      state.sellers = payload.sellers;
+      state.totalSeller = payload.totalSeller;
+    })
+    .addCase(get_seller.fulfilled, (state, { payload }) => {
+      state.seller = payload.seller;
+    })
+    .addCase(seller_status_update.fulfilled, (state, { payload }) => {
+      state.seller = payload.seller;
+      state.successMessage = payload.message;
+    })
+    .addCase(get_active_sellers.fulfilled, (state, { payload }) => {
+      state.sellers = payload.sellers;
+      state.totalSeller = payload.totalSeller;
+    })
+    
+    
+}
 
 })
 export const { messageClear } = sellerReducer.actions
