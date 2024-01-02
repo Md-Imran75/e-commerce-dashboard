@@ -97,7 +97,7 @@ const Product = () => {
                         <Pagination
                             pageNumber={currentPage}
                             setPageNumber={setCurrentPage}
-                            totalItem={50}
+                            totalItem={totalProduct}
                             perPage={perPage}
                             showItem={3}
                         />

@@ -8,7 +8,6 @@ const SellerDetails = () => {
 
     const dispatch = useDispatch()
     const { seller, successMessage } = useSelector(state => state.seller)
-    console.log(seller)
     const { sellerId } = useParams()
     useEffect(() => {
         dispatch(get_seller(sellerId))

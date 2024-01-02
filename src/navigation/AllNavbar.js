@@ -33,48 +33,63 @@ export const allNav = [
     },
     {
         id: 4 ,
+        title: 'All Products',
+        icon : <AiFillDashboard/>,
+        role: 'admin',
+        path: '/admin/dashboard/all-products'
+    },
+    {
+        id: 5 ,
+        title: 'Inhouse Products',
+        icon : <AiFillDashboard/>,
+        role: 'admin',
+        path: '/admin/dashboard/inhouse-products'
+    },
+    {
+        id: 6 ,
+        title: 'Pending Products',
+        icon : <AiFillDashboard/>,
+        role: 'admin',
+        path: '/admin/dashboard/pending-products'
+    },
+    {
+        id: 7 ,
         title: 'Model',
         icon : <BiCategory/>,
         role: 'admin',
         path: '/admin/dashboard/model'
     },
     {
-        id: 5 ,
+        id: 8 ,
         title: 'Brand',
         icon : <MdOutlineBrandingWatermark/>,
         role: 'admin',
         path: '/admin/dashboard/brand'
     },
     {
-        id: 6 ,
+        id: 9 ,
         title: 'Sellers',
         icon : <FiUsers/>,
         role: 'admin',
         path: '/admin/dashboard/sellers'
     },
+   
     {
-        id: 7 ,
-        title: 'Payment request',
-        icon : <BsCurrencyDollar/>,
-        role: 'admin',
-        path: '/admin/dashboard/payment-request'
-    },
-    {
-        id: 8 ,
+        id: 10 ,
         title: 'Deactive Sellers',
         icon : <FiUsers/>,
         role: 'admin',
         path: '/admin/dashboard/deactive-sellers'
     },
     {
-        id: 9 ,
+        id: 11 ,
         title: 'Seller Request',
         icon : <BiLoaderCircle/>,
         role: 'admin',
         path: '/admin/dashboard/seller-request'
     },
     {
-        id: 10 ,
+        id: 12 ,
         title: 'Chat Seller',
         icon : <CiChat1/>,
         role: 'admin',
@@ -84,49 +99,43 @@ export const allNav = [
 
 
     {
-        id: 11 ,
+        id: 13 ,
         title: 'Dashboard',
         icon : <AiFillDashboard/>,
         role: 'seller',
         path: '/seller/dashboard'
     },
     {
-        id: 12 ,
+        id: 14 ,
         title: 'Add Product',
         icon : <AiOutlinePlus/>,
         role: 'seller',
         path: '/seller/dashboard/add-product'
     },
     {
-        id: 13 ,
+        id: 15 ,
         title: 'All Products',
         icon : <RiProductHuntLine/>,
         role: 'seller',
         path: '/seller/dashboard/products'
     },
     {
-        id: 14 ,
+        id: 16 ,
         title: 'Orders',
         icon : <AiOutlineShopping/>,
         role: 'seller',
         path: '/seller/dashboard/orders'
     },
+    
     {
-        id: 15 ,
-        title: 'Payments',
-        icon : <BsCurrencyDollar/>,
-        role: 'seller',
-        path: '/seller/dashboard/payments'
-    },
-    {
-        id: 16 ,
+        id: 17 ,
         title: 'Chat Support',
         icon : <CiChat1/>,
         role: 'seller',
         path: '/seller/dashboard/chat-support'
     },
     {
-        id: 17 ,
+        id: 18 ,
         title: 'Profile',
         icon : <FiUsers/>,
         role: 'seller',

@@ -4,12 +4,12 @@ import { FaEdit, FaEye, FaTrash } from "react-icons/fa"
 import { Link } from "react-router-dom"
 import Pagination from "../Pagination"
 import { useDispatch, useSelector } from 'react-redux'
-import { get_products, delete_product, get_all_products_for_admin } from "../../store/reducers/productReducer"
+import { get_products, delete_product} from "../../store/reducers/productReducer"
 
 
-const AllProducts = () => {
+const InhouseProduct = () => {
     const dispatch = useDispatch()
-    const { allProducts , totalProduct } = useSelector(state => state.product)
+    const { products , totalProduct } = useSelector(state => state.product)
     const [currentPage, setCurrentPage] = useState(1)
     const [searchValue, setSearchValue] = useState('')
     const [perPage, setPerPage] = useState(10)
@@ -18,7 +18,8 @@ const AllProducts = () => {
     const handleDeleteProduct = async (productId) => {
         try {
             await dispatch(delete_product(productId));
-            dispatch(get_all_products_for_admin({ perPage, page: currentPage, searchValue }));
+            // Fetch the updated product list immediately after deletion
+            dispatch(get_products({ perPage, page: currentPage, searchValue }));
         } catch (error) {
             console.error('Error deleting product:', error);
         }
@@ -32,7 +33,7 @@ const AllProducts = () => {
             page: parseInt(currentPage),
             searchValue
         }
-        dispatch(get_all_products_for_admin(obj))
+        dispatch(get_products(obj))
     }, [searchValue, currentPage, perPage])
 
   return (
@@ -51,12 +52,14 @@ const AllProducts = () => {
                                         <th scope='col' className='py-2 px-4'>Brand</th>
                                         <th scope='col' className='py-2 px-4'>Price</th>
                                         <th scope='col' className='py-2 px-4'>Status</th>
+
+
                                         <th scope='col' className='py-2 px-4'>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
-                                        allProducts?.map((d, i) =>
+                                        products?.map((d, i) =>
 
                                             <tr key={i}>
                                                 <td scope='row' className='py-3 font-medium whitespace-nowrap px-4'>{i + 1}</td>
@@ -113,4 +116,4 @@ const AllProducts = () => {
   )
 }
 
-export default AllProducts
+export default InhouseProduct

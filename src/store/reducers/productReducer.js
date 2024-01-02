@@ -91,6 +91,20 @@ export const get_product = createAsyncThunk(
     }
 )
 
+
+export const get_all_products_for_admin = createAsyncThunk(
+    'product/get_all_products_for_admin',
+    async ({ perPage, page, searchValue }, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.get(`/all-products-get-for-admin?page=${page}&&searchValue=${searchValue}&&perPage=${perPage}`, { withCredentials: true })
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+);
+
+
 export const delete_product = createAsyncThunk(
     'product/delete_product',
     async (productId, { rejectWithValue, fulfillWithValue }) => {
@@ -103,6 +117,58 @@ export const delete_product = createAsyncThunk(
     }
 );
 
+export const get_product_request = createAsyncThunk(
+    'seller/get_product_request',
+    async ({ perPage, page, searchValue }, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.get(`/request-product-get?page=${page}&&searchValue=${searchValue}&&perPage=${perPage}`, { withCredentials: true })
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
+export const product_status_update = createAsyncThunk(
+    'seller/product_status_update',
+    async (info, { rejectWithValue, fulfillWithValue }) => {
+        console.log(info)
+        try {
+            const { data } = await api.post(`/product-status-update`, info, { withCredentials: true })
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
+
+export const get_active_products = createAsyncThunk(
+    'seller/get_active_products',
+    async ({ perPage, page, searchValue }, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.get(`/get-products?page=${page}&&searchValue=${searchValue}&&perPage=${perPage}`, { withCredentials: true })
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
+
+export const get_rejected_products = createAsyncThunk(
+    'seller/get_active_products',
+    async ({ perPage, page, searchValue }, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.get(`/get-rejected-products?page=${page}&&searchValue=${searchValue}&&perPage=${perPage}`, { withCredentials: true })
+            return fulfillWithValue(data)
+        } catch (error) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
+
 
 
 
@@ -113,6 +179,7 @@ export const productReducer = createSlice({
         errorMessage: '',
         loader: false,
         products: [],
+        allProducts: [],
         product: '',
         totalProduct: 0
     },
@@ -173,7 +240,23 @@ export const productReducer = createSlice({
     .addCase(delete_product.fulfilled, (state, { payload }) => {
         state.loader = false;
         state.successMessage = payload.message;
-    });
+    })
+    .addCase(get_all_products_for_admin.fulfilled, (state, { payload }) => {
+        state.totalProduct = payload.totalProduct;
+        state.allProducts = payload.products;
+    })
+    .addCase(product_status_update.fulfilled, (state, { payload }) => {
+        state.product = payload.product;
+        state.successMessage = payload.message;
+      })
+      .addCase(get_active_products.fulfilled, (state, { payload }) => {
+        state.products = payload.products;
+        state.totalProduct = payload.totalProduct;
+      })
+      .addCase(get_product_request.fulfilled, (state, { payload }) => {
+        state.products = payload.products;
+        state.totalProduct = payload.totalProduct;
+      })
 
 }
 

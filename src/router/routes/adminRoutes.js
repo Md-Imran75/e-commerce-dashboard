@@ -12,6 +12,12 @@ const ChatSellers = lazy(() => import('../../views/admin/ChatSellers'))
 const OrderDetails = lazy(() => import('../../views/admin/OrderDetails'))
 const AddProduct = lazy(() => import('../../views/seller/AddProduct'))
 const AllProducts = lazy(() => import('../../views/admin/AllProducts'))
+const EditProduct = lazy(() => import('../../views/admin/EditProduct'))
+const InhouseProduct = lazy(() => import('../../views/admin/InhouseProducts'))
+const ProductRequest = lazy(() => import('../../views/admin/ProductRequest'))
+
+
+
 
 export const adminRoutes = [
     {
@@ -32,6 +38,16 @@ export const adminRoutes = [
     {
         path: '/admin/dashboard/all-products',
         element: <AllProducts />,
+        role: 'admin'
+    },
+    {
+        path: '/admin/dashboard/inhouse-products',
+        element: <InhouseProduct />,
+        role: 'admin'
+    },
+    {
+        path: '/admin/dashboard/pending-products',
+        element: <ProductRequest />,
         role: 'admin'
     },
     {
@@ -78,6 +94,11 @@ export const adminRoutes = [
     {
         path: '/admin/dashboard/order/details/:orderId',
         element: <OrderDetails/>,
+        role: 'admin'
+    },
+    {
+        path: '/admin/dashboard/edit-product/:productId',
+        element: <EditProduct/>,
         role: 'admin'
     },
 

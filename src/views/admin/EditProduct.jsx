@@ -7,7 +7,7 @@ import { PropagateLoader } from 'react-spinners'
 import toast from 'react-hot-toast'
 import { get_model } from '../../store/reducers/modelReducer'
 import { get_brand } from '../../store/reducers/brandReducer'
-import { get_product, messageClear, update_product, product_image_update, document_image_update } from '../../store/reducers/productReducer'
+import { get_product, product_status_update, messageClear, update_product, product_image_update, document_image_update } from '../../store/reducers/productReducer'
 import { overrideStyleForButtonLoader } from '../../utils/utils'
 import Button from '../components/Button'
 
@@ -235,6 +235,24 @@ const EditProduct = () => {
   }
 
 
+  // product status update code start
+
+
+    const [status, setStatus] = useState('')
+    const submit = (e) => {
+        e.preventDefault()
+        dispatch(product_status_update({
+            productId,
+            status
+        }))
+    }
+   
+    useEffect(() => {
+        if (product) {
+            setStatus(product.status)
+        }
+    }, [product])
+
   return (
     <div className="px-2 lg:ml-[260px] md:px-7 py-5">
       <div className='w-full p-4 bg-background-100 rounded-md'>
@@ -433,6 +451,20 @@ const EditProduct = () => {
 
         </div>
       </div>
+
+      <div>
+                        <form onSubmit={submit} >
+                            <div className='flex md:flex-row flex-col gap-4 py-3 '>
+                                <select value={status} onChange={(e) => setStatus(e.target.value)}  className='px-4 py-2 hover:border hover:border-primary-500 outline-none rounded-md text-black-500 bg-primary-100' name="" id="">
+                                    <option value="">---select status---</option>
+                                    <option value="active">Active</option>
+                                    <option value="rejected">Reject</option>
+
+                                </select>
+                                <button className="bg-secondary-500 w-[170px] lg:w-[100px]  hover:shadow-sm rounded-md px-7 py-2 my-2 text-white-100 hover:shadow-black-500 ">Submit</button>
+                            </div>
+                        </form>
+                    </div>
     </div>
   )
 }
