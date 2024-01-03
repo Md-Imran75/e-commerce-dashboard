@@ -118,7 +118,7 @@ export const delete_product = createAsyncThunk(
 );
 
 export const get_product_request = createAsyncThunk(
-    'seller/get_product_request',
+    'product/get_product_request',
     async ({ perPage, page, searchValue }, { rejectWithValue, fulfillWithValue }) => {
         try {
             const { data } = await api.get(`/request-product-get?page=${page}&&searchValue=${searchValue}&&perPage=${perPage}`, { withCredentials: true })
@@ -130,7 +130,7 @@ export const get_product_request = createAsyncThunk(
 )
 
 export const product_status_update = createAsyncThunk(
-    'seller/product_status_update',
+    'product/product_status_update',
     async (info, { rejectWithValue, fulfillWithValue }) => {
         console.log(info)
         try {
@@ -144,7 +144,7 @@ export const product_status_update = createAsyncThunk(
 
 
 export const get_active_products = createAsyncThunk(
-    'seller/get_active_products',
+    'product/get_active_products',
     async ({ perPage, page, searchValue }, { rejectWithValue, fulfillWithValue }) => {
         try {
             const { data } = await api.get(`/get-products?page=${page}&&searchValue=${searchValue}&&perPage=${perPage}`, { withCredentials: true })
@@ -157,7 +157,7 @@ export const get_active_products = createAsyncThunk(
 
 
 export const get_rejected_products = createAsyncThunk(
-    'seller/get_active_products',
+    'product/get_active_products',
     async ({ perPage, page, searchValue }, { rejectWithValue, fulfillWithValue }) => {
         try {
             const { data } = await api.get(`/get-rejected-products?page=${page}&&searchValue=${searchValue}&&perPage=${perPage}`, { withCredentials: true })

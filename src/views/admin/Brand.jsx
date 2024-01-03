@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import toast from 'react-hot-toast'
 import { useSelector, useDispatch } from 'react-redux'
-import { get_brand, brandAdd, messageClear } from "../../store/reducers/brandReducer"
+import { get_brand, brandAdd, messageClear , delete_brand } from "../../store/reducers/brandReducer"
 import BrandAndModel from "../components/brandandmodel/BrandAndModel"
 
 
@@ -11,7 +11,6 @@ const InitialState = {
 }
 
 const Brand = () => {
-
     const dispatch = useDispatch()
     const { loader, successMessage, brands, errorMessage, totalbrand } = useSelector(state => state.brand);
     const [currentPage, setCurrentPage] = useState(1)
@@ -50,6 +49,15 @@ const Brand = () => {
         }
     };
 
+    const handleDeleteBrand = async (brandId) => {
+        try {
+            await dispatch(delete_brand(brandId));
+            dispatch(get_brand({ perPage, page: currentPage, searchValue }));
+        } catch (error) {
+            toast.error("Failed to delete brand");
+        }
+    };
+
     // useEffect for success and errormessage
     useEffect(() => {
         if (errorMessage) {
@@ -79,7 +87,7 @@ const Brand = () => {
 
     return (
         <div>
-            <BrandAndModel total={totalbrand} name={'Brand'} names={'Brands'} setCurrentPage={setCurrentPage} setPerPage={setPerPage} setSearchValue={setSearchValue} data={brands} currentPage={currentPage} imageHandle={imageHandle} imageShow={imageShow} loader={loader} setShow={setShow} show={show} submit={addbrand} state={state} setState={setState} perPage={perPage} />
+            <BrandAndModel deleteMethod={handleDeleteBrand} total={totalbrand} name={'Brand'} names={'Brands'} setCurrentPage={setCurrentPage} setPerPage={setPerPage} setSearchValue={setSearchValue} data={brands} currentPage={currentPage} imageHandle={imageHandle} imageShow={imageShow} loader={loader} setShow={setShow} show={show} submit={addbrand} state={state} setState={setState} perPage={perPage} />
         </div>
     )
 }

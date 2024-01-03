@@ -52,7 +52,18 @@ export const seller_change_password = createAsyncThunk(
     async (info, { rejectWithValue, fulfillWithValue }) => {
         try {
             const { data } = await api.post('/seller-change-password', info, { withCredentials: true });
-            console.log(data)
+            return fulfillWithValue(data);
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
+
+export const admin_change_seller_password = createAsyncThunk(
+    'auth/admin_change_seller_password',
+    async (info, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.post('/admin-change-seller-password', info, { withCredentials: true });
             return fulfillWithValue(data);
         } catch (error) {
             return rejectWithValue(error.response.data);
@@ -242,6 +253,17 @@ export const authReducer = createSlice({
                 state.errorMessage = action.payload ? action.payload.error : 'An error occurred';
             })
             .addCase(seller_change_password.fulfilled, (state, action) => {
+                state.loader = false;
+                state.successMessage = action.payload ? action.payload.message : 'An error occurred';
+            })
+            .addCase(admin_change_seller_password.pending, (state, _) => {
+                state.loader = true;
+            })
+            .addCase(admin_change_seller_password.rejected, (state, action) => {
+                state.loader = false;
+                state.errorMessage = action.payload ? action.payload.error : 'An error occurred';
+            })
+            .addCase(admin_change_seller_password.fulfilled, (state, action) => {
                 state.loader = false;
                 state.successMessage = action.payload ? action.payload.message : 'An error occurred';
             })

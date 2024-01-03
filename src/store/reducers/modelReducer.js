@@ -1,7 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import api from '../../api/Api'
 
-
+export const delete_model = createAsyncThunk(
+    'model/delete_model',
+    async (modelId, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.post('/delete-model', { modelId }, { withCredentials: true });
+            return fulfillWithValue(data);
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
 
 export const modelAdd = createAsyncThunk(
     'model/modelAdd',
@@ -66,7 +76,18 @@ export const modelReducer = createSlice({
           .addCase(get_model.fulfilled, (state, { payload }) => {
             state.totalmodel = payload.totalmodel;
             state.models = payload.models;
-          });
+          })
+          .addCase(delete_model.pending, (state, _) => {
+            state.loader = true;
+        })
+        .addCase(delete_model.rejected, (state, { payload }) => {
+            state.loader = false;
+            state.errorMessage = payload.error;
+        })
+        .addCase(delete_model.fulfilled, (state, { payload }) => {
+            state.loader = false;
+            state.successMessage = payload.message;
+        })
       }
       
 })

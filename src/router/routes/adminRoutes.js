@@ -15,6 +15,8 @@ const AllProducts = lazy(() => import('../../views/admin/AllProducts'))
 const EditProduct = lazy(() => import('../../views/admin/EditProduct'))
 const InhouseProduct = lazy(() => import('../../views/admin/InhouseProducts'))
 const ProductRequest = lazy(() => import('../../views/admin/ProductRequest'))
+const SellerPassChange = lazy(() => import('../../views/admin/SellerPassChange'))
+
 
 
 
@@ -74,6 +76,11 @@ export const adminRoutes = [
     {
         path: '/admin/dashboard/seller-request',
         element: <SellerRequest />,
+        role: 'admin'
+    },
+    {
+        path: '/admin/dashboard/seller-password-change',
+        element: <SellerPassChange />,
         role: 'admin'
     },
     {

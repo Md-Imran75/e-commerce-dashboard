@@ -4,7 +4,8 @@ import { FaEdit, FaEye, FaTrash } from "react-icons/fa"
 import { Link } from "react-router-dom"
 import Pagination from "../Pagination"
 import { useDispatch, useSelector } from 'react-redux'
-import { get_products, delete_product, get_all_products_for_admin } from "../../store/reducers/productReducer"
+import {  delete_product, get_all_products_for_admin } from "../../store/reducers/productReducer"
+import toast from 'react-hot-toast'
 
 
 const AllProducts = () => {
@@ -20,7 +21,8 @@ const AllProducts = () => {
             await dispatch(delete_product(productId));
             dispatch(get_all_products_for_admin({ perPage, page: currentPage, searchValue }));
         } catch (error) {
-            console.error('Error deleting product:', error);
+            toast.error("Failed to delete product");
+
         }
     };
 

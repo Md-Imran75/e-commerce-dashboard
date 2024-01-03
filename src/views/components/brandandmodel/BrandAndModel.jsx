@@ -10,7 +10,7 @@ import { Link } from "react-router-dom"
 
 
 
-const BrandAndModel = ({name , names ,total, setPerPage, perPage ,setSearchValue, currentPage, setCurrentPage, show , setShow , submit , data , imageShow , imageHandle , loader , state , setState}) => {
+const BrandAndModel = ({name , names , total, setPerPage, perPage ,setSearchValue, currentPage, setCurrentPage, show , setShow , submit , data , imageShow , imageHandle , loader , state , setState , deleteMethod}) => {
   return (
     <div className='px-2 lg:ml-[260px] md:px-7 pt-5'>
             <div className="flex lg:hidden justify-between items-center mb-5 p-4 bg-primary-100 rounded-md">
@@ -49,9 +49,8 @@ const BrandAndModel = ({name , names ,total, setPerPage, perPage ,setSearchValue
                                                 </td>
                                                 <td scope='row' className='py-3 font-medium whitespace-nowrap px-4'>
                                                     <div className="flex justify-start start items-center gap-4">
-                                                        <Link className="text-white-100 p-[6px] bg-secondary-500 rounded-sm hover:shadow-md hover:shadow-black-500 "> <FaEdit /> </Link>
-
-                                                        <Link className="text-white-100 p-[6px] bg-secondary-500 rounded-sm hover:shadow-md hover:shadow-black-500 "> <FaTrash /> </Link>
+                                                       
+                                                        <Link onClick={() => deleteMethod(d._id)} className="text-white-100 p-[6px] bg-secondary-500 rounded-sm hover:shadow-md hover:shadow-black-500 "> <FaTrash /> </Link>
                                                     </div>
                                                 </td>
                                             </tr>

@@ -34,7 +34,17 @@ export const get_brand = createAsyncThunk(
     }
 )
 
-
+export const delete_brand = createAsyncThunk(
+    'brand/delete_brand',
+    async (brandId, { rejectWithValue, fulfillWithValue }) => {
+        try {
+            const { data } = await api.post('/delete-brand', { brandId }, { withCredentials: true });
+            return fulfillWithValue(data);
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    }
+);
 
 export const brandReducer = createSlice({
     name: 'brand',
@@ -68,7 +78,18 @@ export const brandReducer = createSlice({
           .addCase(get_brand.fulfilled, (state, { payload }) => {
             state.totalbrand = payload.totalbrand;
             state.brands = payload.brands;
-          });
+          })
+          .addCase(delete_brand.pending, (state, _) => {
+            state.loader = true;
+        })
+        .addCase(delete_brand.rejected, (state, { payload }) => {
+            state.loader = false;
+            state.errorMessage = payload.error;
+        })
+        .addCase(delete_brand.fulfilled, (state, { payload }) => {
+            state.loader = false;
+            state.successMessage = payload.message;
+        })
       }
       
 

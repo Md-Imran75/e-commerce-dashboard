@@ -90,6 +90,13 @@ export const allNav = [
     },
     {
         id: 12 ,
+        title: 'Seller Password Change',
+        icon : <BiLoaderCircle/>,
+        role: 'admin',
+        path: '/admin/dashboard/seller-password-change'
+    },
+    {
+        id: 13 ,
         title: 'Chat Seller',
         icon : <CiChat1/>,
         role: 'admin',
@@ -99,28 +106,28 @@ export const allNav = [
 
 
     {
-        id: 13 ,
+        id: 14 ,
         title: 'Dashboard',
         icon : <AiFillDashboard/>,
         role: 'seller',
         path: '/seller/dashboard'
     },
     {
-        id: 14 ,
+        id: 15 ,
         title: 'Add Product',
         icon : <AiOutlinePlus/>,
         role: 'seller',
         path: '/seller/dashboard/add-product'
     },
     {
-        id: 15 ,
+        id: 16 ,
         title: 'All Products',
         icon : <RiProductHuntLine/>,
         role: 'seller',
         path: '/seller/dashboard/products'
     },
     {
-        id: 16 ,
+        id: 17 ,
         title: 'Orders',
         icon : <AiOutlineShopping/>,
         role: 'seller',
@@ -128,14 +135,14 @@ export const allNav = [
     },
     
     {
-        id: 17 ,
+        id: 18 ,
         title: 'Chat Support',
         icon : <CiChat1/>,
         role: 'seller',
         path: '/seller/dashboard/chat-support'
     },
     {
-        id: 18 ,
+        id: 19 ,
         title: 'Profile',
         icon : <FiUsers/>,
         role: 'seller',
