@@ -5,6 +5,8 @@ import productReducer from "./reducers/productReducer";
 import sellerReducer from "./reducers/sellerReducer";
 import chatReducer from "./reducers/chatReducer";
 import OrderReducer from "./reducers/OrderReducer";
+import dashboardIndexReducer from "./reducers/dashboardIndexReducer";
+import bannerReducer from "./reducers/bannerReducer";
 
 
 const rootReducers = {
@@ -14,7 +16,9 @@ const rootReducers = {
     product: productReducer,
     seller: sellerReducer,
     chat: chatReducer,
-    order: OrderReducer
+    order: OrderReducer,
+    dashboardIndex: dashboardIndexReducer,
+    banner: bannerReducer
 };
 
 export default rootReducers;

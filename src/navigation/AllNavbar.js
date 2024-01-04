@@ -2,7 +2,6 @@ import {AiFillDashboard , AiOutlineShopping , AiOutlinePlus , } from 'react-icon
 import {BiCategory , BiLoaderCircle} from 'react-icons/bi'
 import {FiUsers} from 'react-icons/fi'
 import {RiProductHuntLine} from 'react-icons/ri'
-import {BsCurrencyDollar} from 'react-icons/bs'
 import {CiChat1} from 'react-icons/ci'
 import { MdOutlineBrandingWatermark } from "react-icons/md"
 
@@ -27,28 +26,28 @@ export const allNav = [
     {
         id: 3 ,
         title: 'Add Product',
-        icon : <AiFillDashboard/>,
+        icon : <AiOutlinePlus/>,
         role: 'admin',
         path: '/admin/dashboard/add-product'
     },
     {
         id: 4 ,
         title: 'All Products',
-        icon : <AiFillDashboard/>,
+        icon : <RiProductHuntLine/>,
         role: 'admin',
         path: '/admin/dashboard/all-products'
     },
     {
         id: 5 ,
         title: 'Inhouse Products',
-        icon : <AiFillDashboard/>,
+        icon : <RiProductHuntLine/>,
         role: 'admin',
         path: '/admin/dashboard/inhouse-products'
     },
     {
         id: 6 ,
         title: 'Pending Products',
-        icon : <AiFillDashboard/>,
+        icon : <RiProductHuntLine/>,
         role: 'admin',
         path: '/admin/dashboard/pending-products'
     },
@@ -68,6 +67,19 @@ export const allNav = [
     },
     {
         id: 9 ,
+        title: 'Add Banner',
+        icon : <MdOutlineBrandingWatermark/>,
+        role: 'admin',
+        path: '/admin/dashboard/add-banner'
+    }, {
+        id: 10 ,
+        title: 'All Banners',
+        icon : <MdOutlineBrandingWatermark/>,
+        role: 'admin',
+        path: '/admin/dashboard/all-banners'
+    },
+    {
+        id: 11 ,
         title: 'Sellers',
         icon : <FiUsers/>,
         role: 'admin',
@@ -75,28 +87,28 @@ export const allNav = [
     },
    
     {
-        id: 10 ,
+        id: 12 ,
         title: 'Deactive Sellers',
         icon : <FiUsers/>,
         role: 'admin',
         path: '/admin/dashboard/deactive-sellers'
     },
     {
-        id: 11 ,
+        id: 13 ,
         title: 'Seller Request',
         icon : <BiLoaderCircle/>,
         role: 'admin',
         path: '/admin/dashboard/seller-request'
     },
     {
-        id: 12 ,
+        id: 14 ,
         title: 'Seller Password Change',
         icon : <BiLoaderCircle/>,
         role: 'admin',
         path: '/admin/dashboard/seller-password-change'
     },
     {
-        id: 13 ,
+        id: 15 ,
         title: 'Chat Seller',
         icon : <CiChat1/>,
         role: 'admin',
@@ -106,28 +118,28 @@ export const allNav = [
 
 
     {
-        id: 14 ,
+        id: 16 ,
         title: 'Dashboard',
         icon : <AiFillDashboard/>,
         role: 'seller',
         path: '/seller/dashboard'
     },
     {
-        id: 15 ,
+        id: 16 ,
         title: 'Add Product',
         icon : <AiOutlinePlus/>,
         role: 'seller',
         path: '/seller/dashboard/add-product'
     },
     {
-        id: 16 ,
+        id: 17 ,
         title: 'All Products',
         icon : <RiProductHuntLine/>,
         role: 'seller',
         path: '/seller/dashboard/products'
     },
     {
-        id: 17 ,
+        id: 18 ,
         title: 'Orders',
         icon : <AiOutlineShopping/>,
         role: 'seller',
@@ -135,14 +147,14 @@ export const allNav = [
     },
     
     {
-        id: 18 ,
+        id: 19 ,
         title: 'Chat Support',
         icon : <CiChat1/>,
         role: 'seller',
         path: '/seller/dashboard/chat-support'
     },
     {
-        id: 19 ,
+        id: 20 ,
         title: 'Profile',
         icon : <FiUsers/>,
         role: 'seller',

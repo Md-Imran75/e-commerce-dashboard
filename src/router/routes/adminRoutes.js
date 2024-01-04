@@ -1,5 +1,6 @@
 import { lazy } from 'react'
 
+
 const AdminDashboard = lazy(() => import('../../views/admin/AdminDashboard'))
 const Orders = lazy(() => import('../../views/admin/Orders'))
 const Model = lazy(() => import('../../views/admin/Model'))
@@ -16,6 +17,9 @@ const EditProduct = lazy(() => import('../../views/admin/EditProduct'))
 const InhouseProduct = lazy(() => import('../../views/admin/InhouseProducts'))
 const ProductRequest = lazy(() => import('../../views/admin/ProductRequest'))
 const SellerPassChange = lazy(() => import('../../views/admin/SellerPassChange'))
+const AddBanner = lazy(() => import('../../views/admin/AddBanner'))
+const AllBanner = lazy(() => import('../../views/admin/AllBanner'))
+
 
 
 
@@ -35,6 +39,16 @@ export const adminRoutes = [
     {
         path: '/admin/dashboard/add-product',
         element: <AddProduct />,
+        role: 'admin'
+    },
+    {
+        path: '/admin/dashboard/add-banner',
+        element: <AddBanner />,
+        role: 'admin'
+    },
+    {
+        path: '/admin/dashboard/all-banners',
+        element: <AllBanner />,
         role: 'admin'
     },
     {
